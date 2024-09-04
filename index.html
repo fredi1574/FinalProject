@@ -73,6 +73,32 @@
           d3.quantize(d3.interpolateRainbow, data.children.length + 1)
         );
 
+        const colorMap = {
+          Mindset: "#6AA84F",
+          "Thinking development": "#FFD966",
+          "Emotional quotient": "#FF9900",
+          "Professional self": "#6FA8DC",
+          "Development of skills": "#84D162",
+          "Coping with success and failure": "#84D162",
+          "Moving from comfort zone": "#84D162",
+          "Effort investing in learning ": "#84D162",
+          "Creative thinking": "#FFFB8F",
+          "Analytical thinking": "#FFFB8F",
+          "Evaluative-critical thinking": "#FFFB8F",
+          "System thinking": "#FFFB8F",
+          "Awareness of emotions": "#FFB647",
+          "Familiarity and acceptance": "#FFB647",
+          "Self regulation of emotions": "#FFB647",
+          "Relationship building": "#FFB647",
+          "Collaboration in the team": "#FFB647",
+          Empathy: "#FFB647",
+          "Uncertainty and stress handling": "#FFB647",
+          Meaning: "#81C3FF",
+          "Positive framing": "#81C3FF",
+          "Social relationship": "#81C3FF",
+          Wellbeing: "#81C3FF",
+        };
+
         const hierarchy = d3
           .hierarchy(data)
           .sum((d) => d.value)
@@ -102,10 +128,7 @@
           .selectAll("path")
           .data(root.descendants().slice(1))
           .join("path")
-          .attr("fill", (d) => {
-            while (d.depth > 1) d = d.parent;
-            return color(d.data.name);
-          })
+          .attr("fill", (d) => colorMap[d.data.name] || "#ccc")
           .attr("fill-opacity", (d) =>
             arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0
           )

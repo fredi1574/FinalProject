@@ -7,6 +7,21 @@
     <style>
       body {
         font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .chart-container {
+        width: 100%;
+        max-width: 1000px;
+        height: auto;
+        padding: 10px;
+      }
+      .chart {
+        width: 100%;
       }
       svg {
         font-size: 10px;
@@ -14,7 +29,9 @@
     </style>
   </head>
   <body>
-    <div id="chart"></div>
+    <div class="chart-container">
+      <div id="englishChart" class="chart"></div>
+    </div>
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
@@ -23,81 +40,87 @@
         children: [
           {
             name: "Mindset",
+            color: "#93C47D",
             children: [
-              { name: "Development of skills", value: 25 },
-              { name: "Coping with success and failure", value: 25 },
-              { name: "Moving from comfort zone", value: 25 },
-              { name: "Effort investing in learning ", value: 25 },
+              { name: "Development of skills", value: 25, color: "#A3CC8E" },
+              {
+                name: "Coping with success and failure",
+                value: 25,
+                color: "#A3CC8E",
+              },
+              { name: "Moving from comfort zone", value: 25, color: "#A3CC8E" },
+              {
+                name: "Effort investing in learning ",
+                value: 25,
+                color: "#A3CC8E",
+              },
             ],
           },
           {
             name: "Thinking development",
+            color: "#6FA8DC",
             children: [
-              { name: "Creative thinking", value: 25 },
-              { name: "Analytical thinking", value: 25 },
-              { name: "Evaluative-critical thinking", value: 25 },
-              { name: "System thinking", value: 25 },
+              { name: "Creative thinking", value: 25, color: "#8CB9E3" },
+              { name: "Analytical thinking", value: 25, color: "#8CB9E3" },
+              {
+                name: "Evaluative-critical thinking",
+                value: 25,
+                color: "#8CB9E3",
+              },
+              { name: "System thinking", value: 25, color: "#8CB9E3" },
             ],
           },
           {
             name: "Emotional quotient",
+            color: "#F1C232",
             children: [
-              { name: "Awareness of emotions", value: 25 },
-              { name: "Familiarity and acceptance", value: 25 },
-              { name: "Self regulation of emotions", value: 25 },
-              { name: "Relationship building", value: 25 },
-              { name: "Collaboration in the team", value: 25 },
-              { name: "Empathy", value: 25 },
-              { name: "Uncertainty and stress handling", value: 25 },
+              { name: "Awareness of emotions", value: 25, color: "#F3CB53" },
+              {
+                name: "Familiarity and acceptance",
+                value: 25,
+                color: "#F3CB53",
+              },
+              {
+                name: "Self regulation of emotions",
+                value: 25,
+                color: "#F3CB53",
+              },
+              { name: "Relationship building", value: 25, color: "#F3CB53" },
+              {
+                name: "Collaboration in the team",
+                value: 25,
+                color: "#F3CB53",
+              },
+              { name: "Empathy", value: 25, color: "#F3CB53" },
+              {
+                name: "Uncertainty and stress handling",
+                value: 25,
+                color: "#F3CB53",
+              },
             ],
           },
           {
             name: "Professional self",
+            color: "#B4A7D6",
             children: [
-              { name: "Meaning", value: 25 },
-              { name: "Positive framing", value: 25 },
-              { name: "Social relationship", value: 25 },
-              { name: "Wellbeing", value: 25 },
+              { name: "Meaning", value: 25, color: "#C4BADE" },
+              { name: "Positive framing", value: 25, color: "#C4BADE" },
+              { name: "Social relationship", value: 25, color: "#C4BADE" },
+              { name: "Wellbeing", value: 25, color: "#D0C8E5" },
             ],
           },
         ],
       };
 
-      // The chart function as provided
       function chart() {
-        const width = 928;
-        const height = width;
-        const radius = width / 10;
+        const container = document.getElementById("englishChart");
+        const width = container.offsetWidth; // Set width to 100% of container
+        const height = width; // Keep height the same as width for a square chart
+        const radius = width / 7; // Adjusted the radius for better scaling
 
         const color = d3.scaleOrdinal(
           d3.quantize(d3.interpolateRainbow, data.children.length + 1)
         );
-
-        const colorMap = {
-          Mindset: "#6AA84F",
-          "Thinking development": "#FFD966",
-          "Emotional quotient": "#FF9900",
-          "Professional self": "#6FA8DC",
-          "Development of skills": "#84D162",
-          "Coping with success and failure": "#84D162",
-          "Moving from comfort zone": "#84D162",
-          "Effort investing in learning ": "#84D162",
-          "Creative thinking": "#FFFB8F",
-          "Analytical thinking": "#FFFB8F",
-          "Evaluative-critical thinking": "#FFFB8F",
-          "System thinking": "#FFFB8F",
-          "Awareness of emotions": "#FFB647",
-          "Familiarity and acceptance": "#FFB647",
-          "Self regulation of emotions": "#FFB647",
-          "Relationship building": "#FFB647",
-          "Collaboration in the team": "#FFB647",
-          Empathy: "#FFB647",
-          "Uncertainty and stress handling": "#FFB647",
-          Meaning: "#81C3FF",
-          "Positive framing": "#81C3FF",
-          "Social relationship": "#81C3FF",
-          Wellbeing: "#81C3FF",
-        };
 
         const hierarchy = d3
           .hierarchy(data)
@@ -120,17 +143,19 @@
 
         const svg = d3
           .create("svg")
-          .attr("viewBox", [-width / 2, -height / 2, width * 2, width * 2])
-          .style("font", "10px sans-serif");
+          .attr("viewBox", [-width / 2, -height / 2, width, height])
+          .style("font", "10px sans-serif")
+          .attr("width", "100%") // Set SVG to 100% width
+          .attr("height", height); // Adjust height dynamically
 
         const path = svg
           .append("g")
           .selectAll("path")
           .data(root.descendants().slice(1))
           .join("path")
-          .attr("fill", (d) => colorMap[d.data.name] || "#ccc")
+          .attr("fill", (d) => d.data.color || "#ccc")
           .attr("fill-opacity", (d) =>
-            arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0
+            arcVisible(d.current) ? (d.children ? 1 : 0.5) : 0
           )
           .attr("pointer-events", (d) =>
             arcVisible(d.current) ? "auto" : "none"
@@ -163,7 +188,7 @@
           .attr("dy", "0.35em")
           .attr("fill-opacity", (d) => +labelVisible(d.current))
           .attr("transform", (d) => labelTransform(d.current))
-          .style("font-size", "12px") //changing the font size
+          .style("font-size", "14px")
           .text((d) => d.data.name);
 
         const parent = svg
@@ -193,7 +218,7 @@
               })
           );
 
-          const t = svg.transition().duration(750);
+          const t = svg.transition().duration(500);
 
           path
             .transition(t)
@@ -232,7 +257,7 @@
         }
 
         function labelTransform(d) {
-          const x = (((d.x0 + d.x1) / 2) * 180) / Math.PI;
+          const x = ((d.x0 + d.x1) / 2) * (180 / Math.PI);
           const y = ((d.y0 + d.y1) / 2) * radius;
           return `rotate(${x - 90}) translate(${y},0) rotate(${
             x < 180 ? 0 : 180
@@ -242,7 +267,13 @@
         return svg.node();
       }
 
-      document.getElementById("chart").appendChild(chart());
+      window.addEventListener("resize", () => {
+        const container = document.getElementById("englishChart");
+        container.innerHTML = ""; // Clear previous chart
+        container.appendChild(chart()); // Recreate chart on resize
+      });
+
+      document.getElementById("englishChart").appendChild(chart());
     </script>
   </body>
 </html>
